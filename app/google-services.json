@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "808122360280",
+    "firebase_url": "https://beecard-6d641.firebaseio.com",
+    "project_id": "beecard-6d641",
+    "storage_bucket": "beecard-6d641.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:808122360280:android:ce3aafed23e79aae",
+        "android_client_info": {
+          "package_name": "com.mvvmrecycleview.extremedeveloper.beecard"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "808122360280-6fu045r4es9n3bubjhhce2oag991btt5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mvvmrecycleview.extremedeveloper.beecard",
+            "certificate_hash": "a042b06fca8e42ec00b937c6f6136a98ffbe873f"
+          }
+        },
+        {
+          "client_id": "808122360280-h76hc7b6hbq943nrbfl9nq82sotqql65.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCQX0_1aGQp4TKyV3i9sYmYJAIYiTmaV4A"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "808122360280-h76hc7b6hbq943nrbfl9nq82sotqql65.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
