@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">beecard</string>
     <string name="firebaseUrl">https://beecard-138a4.firebaseio.com/</string>
+    <string name="my_id">myid</string>
 </resources>

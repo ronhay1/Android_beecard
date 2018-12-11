@@ -1,11 +1,11 @@
 package com.mvvmrecycleview.extremedeveloper.beecard.model;
 
-import com.google.firebase.database.IgnoreExtraProperties;
+//import com.google.firebase.database.IgnoreExtraProperties;
 
 /**
  * Created by מחשב שלי on 05/12/2018.
  */
-@IgnoreExtraProperties
+//@IgnoreExtraProperties
 public class Card {
     public String Name;
     public String Last_Name;
@@ -48,7 +48,7 @@ public class Card {
 
     public boolean havePhone()
     {
-        if(Phone.length()<=0)
+        if(Phone==null||Phone.length()<=0)
             return false;
         return true;
     }

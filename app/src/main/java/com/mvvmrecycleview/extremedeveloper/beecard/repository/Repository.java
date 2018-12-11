@@ -1,25 +1,33 @@
 package com.mvvmrecycleview.extremedeveloper.beecard.repository;
 
 import android.arch.lifecycle.MutableLiveData;
-import android.util.Log;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.mvvmrecycleview.extremedeveloper.beecard.model.Card;
+import com.mvvmrecycleview.extremedeveloper.beecard.presenter.CardUpdated;
 
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Vector;
-
-import static android.content.ContentValues.TAG;
 
 /**
  * Created by מחשב שלי on 05/12/2018.
  */
 
 public class Repository {
+    private static String Tag = "Repository";
+    public static final String LASTNAME= "Last_name";
+    public static final String NAME = "Name";
+    public static final String PHONE= "Phone";
+
+    FirebaseFirestore db;
+    CollectionReference card_ref;
     static Repository repository;
     MutableLiveData<Vector<Card>> cards;
 
@@ -33,7 +41,11 @@ public class Repository {
     private Repository()
     {
         cards = new MutableLiveData<>();
-        final FirebaseDatabase database = FirebaseDatabase.getInstance("https://beecard-138a4.firebaseio.com/");
+        db = FirebaseFirestore.getInstance();
+        card_ref = db.collection("users");
+        updateAllCards();
+        //saveCard();
+        /*final FirebaseDatabase database = FirebaseDatabase.getInstance("https://beecard-138a4.firebaseio.com/");
         DatabaseReference myRef = database.getReference("users");
 
         // Read from the database
@@ -56,7 +68,7 @@ public class Repository {
                 // Failed to read value
                 Log.w(TAG, "Failed to read value.", error.toException());
             }
-        });
+        });*/
 /*
         Card card = new Card();
         card.Company = "idf";
@@ -72,6 +84,66 @@ public class Repository {
         myRef.setValue("Hello, World!");
     */
     }
+
+    public void saveCard(final CardUpdated presenter)
+    {
+        Map<String,Object> card = new HashMap<>();
+        card.put(NAME,"bla");
+        card.put(LASTNAME,"blala");
+        card.put(PHONE,"052222222");
+        db.collection("users").add(card).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+            @Override
+            public void onSuccess(DocumentReference documentReference) {
+                presenter.cardInserted(documentReference.getId());
+            }
+        });
+    }
+
+    public void getCard(String id, final CardUpdated cardUpdated)
+    {
+        db.collection("users").document(id).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                try {
+                    Card card = new Card();
+                    card.Phone = documentSnapshot.getString(PHONE);
+                    card.Last_Name = documentSnapshot.getString(LASTNAME);
+                    card.Name = documentSnapshot.getString(NAME);
+                    cardUpdated.addCard(card);
+                }
+                catch (Exception e){}
+            }
+        });
+    }
+
+
+
+    public void updateAllCards()
+    {
+        final Vector<Card> newcards = new Vector<>();
+        card_ref.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                if(!queryDocumentSnapshots.isEmpty())
+                {
+                    Iterator<DocumentSnapshot> I= queryDocumentSnapshots.getDocuments().iterator();
+                    while (I.hasNext())
+                    {
+                        try {
+                            DocumentSnapshot cur = I.next();
+                            Card card = new Card();
+                            card.Phone = cur.getString(PHONE);
+                            card.Last_Name = cur.getString(LASTNAME);
+                            card.Name = cur.getString(NAME);
+                            if(card.Phone==null || card.Last_Name==null || card.Name == null) throw new Exception("null");
+                            newcards.add(card);
+                        }catch (Exception e){}
+                    }
+                    cards.setValue(newcards);
+                }
+            }
+        });
+     }
 
     public MutableLiveData<Vector<Card>> getCards()
     {
